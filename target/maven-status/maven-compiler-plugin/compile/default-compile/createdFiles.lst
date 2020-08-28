@@ -1,0 +1,15 @@
+com\looseboxes\gmailapi\GmailSenderImpl.class
+com\looseboxes\gmailapi\DataStoreProvider.class
+com\looseboxes\gmailapi\GmailSender.class
+com\looseboxes\gmailapi\GmailFactory.class
+com\looseboxes\gmailapi\CredentialsProviderImpl.class
+com\looseboxes\gmailapi\DataStoreProviderImpl.class
+com\looseboxes\gmailapi\GmailProvider.class
+com\looseboxes\gmailapi\CredentialsProvider.class
+com\looseboxes\gmailapi\GmailConfig.class
+com\looseboxes\gmailapi\MailException.class
+com\looseboxes\gmailapi\MessageUtil.class
+com\looseboxes\gmailapi\GmailFactoryImpl.class
+com\looseboxes\gmailapi\GmailAccessProperties.class
+com\looseboxes\gmailapi\GmailConfigImpl.class
+com\looseboxes\gmailapi\GmailProviderImpl.class
