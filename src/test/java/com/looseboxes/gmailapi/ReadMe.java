@@ -23,13 +23,15 @@ public class ReadMe {
 
             final String from = "looseboxes@gmail.com";
             final String to = "posh.bc@gmail.com";
-            final String subject = "Subject 1 - Jesus is Lord";
-            final String content = "Message 1 - Alpha and Omega is Jesus";
+            final String subject = "Subject 1";
+            final String content = "Message 1";
                    
             final MimeMessage mimeMessage = MessageUtil.createEmail(to, from, subject, content);
 
             Gmail gmail = new GmailProviderImpl(appName, new GmailConfigImpl(props)).get();
             
+            // me is a keyword used to refer to the current user
+            //
             gmail.users().messages().send("me", MessageUtil.fromMimeMessage(mimeMessage));
             
         }catch(Exception e) {
