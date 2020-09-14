@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
  */
 public class ReadMe {
     
-    @Test
     public static void main(String... args) {
         
         final String appName = "my app";
