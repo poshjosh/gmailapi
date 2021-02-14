@@ -23,6 +23,30 @@ import javax.mail.internet.MimeMultipart;
  */
 public final class MessageUtil {
     
+    public static Message createMessage(String to,
+                                        String from,
+                                        String subject,
+                                        String bodyText) 
+            throws MessagingException, IOException {
+        
+        MimeMessage mimeMessage = MessageUtil.createEmail(to, from, subject, bodyText);
+        
+        return MessageUtil.fromMimeMessage(mimeMessage);
+    }
+    
+    public static Message createMessage(String to,
+                                        String from,
+                                        String subject,
+                                        String bodyText,
+                                        File file) 
+            throws MessagingException, IOException {
+        
+        MimeMessage mimeMessage = MessageUtil
+                .createEmailWithAttachment(to, from, subject, bodyText, file);
+        
+        return MessageUtil.fromMimeMessage(mimeMessage);
+    }
+
     /**
      * Create a MimeMessage using the parameters provided.
      *
