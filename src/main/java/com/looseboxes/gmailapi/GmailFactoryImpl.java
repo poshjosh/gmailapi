@@ -1,22 +1,24 @@
 package com.looseboxes.gmailapi;
 
-import com.google.api.services.gmail.Gmail;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+
+import com.google.api.services.gmail.Gmail;
+import com.looseboxes.gmailapi.config.GmailConfig;
 
 /**
  * @author chinomso ikwuagwu
  */
 public class GmailFactoryImpl implements GmailFactory{
 
-    private final GmailProvider provider;
+    private final GmailBuilder gmailBuilder;
     
     public GmailFactoryImpl(String applicationName, GmailConfig properties) {
-        this.provider = this.createGmailProvider(applicationName, properties);
+        this.gmailBuilder = this.createGmailBuilder(applicationName, properties);
     }
 
     public GmailFactoryImpl(String applicationName, GmailConfig properties, DataStoreProvider dataStoreProvider) {
-        this.provider = this.createGmailProvider(applicationName, properties, dataStoreProvider);
+        this.gmailBuilder = this.createGmailBuilder(applicationName, properties, dataStoreProvider);
     }
 
     @Override
@@ -28,32 +30,29 @@ public class GmailFactoryImpl implements GmailFactory{
     public Gmail getGmail() {
         if(_gmail_accessViaGetter == null) {
             try{
-                _gmail_accessViaGetter = getGmailProvider().get();
-            }catch(IOException e) {
+                _gmail_accessViaGetter = getGmailBuilder().build();
+            }catch(IOException | GeneralSecurityException e) {
                 throw new MailException(e);
             }
         }
         return _gmail_accessViaGetter;
     }
     
-    public GmailProvider getGmailProvider() {
-        return provider;
+    private GmailBuilder getGmailBuilder() {
+        return gmailBuilder;
     }
 
-    private GmailProvider createGmailProvider(String applicationName, GmailConfig properties) {
-        try{
-            return new GmailProviderImpl(applicationName, properties);
-        }catch(IOException | GeneralSecurityException e) {
-            throw new MailException(e);
-        }
+    private GmailBuilder createGmailBuilder(String applicationName, GmailConfig properties) {
+    	return createGmailBuilder(applicationName, properties, null);
     }
     
-    private GmailProvider createGmailProvider(String applicationName, 
-            GmailConfig properties, DataStoreProvider dataStoreProvider) {
-        try{
-            return new GmailProviderImpl(applicationName, properties, dataStoreProvider);
-        }catch(IOException | GeneralSecurityException e) {
-            throw new MailException(e);
-        }
+    private GmailBuilder createGmailBuilder(
+    		String applicationName, GmailConfig properties, DataStoreProvider dataStoreProvider) {
+    	return new GmailBuilder()
+    			.applicationName(applicationName)
+    			.credentialsProviderBuilder(
+    					new CredentialsProvider()
+    							.gmailConfig(properties)
+    							.dataStoreProvider(dataStoreProvider));
     }
 }
