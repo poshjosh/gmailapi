@@ -101,9 +101,9 @@ public class CredentialsProvider{
 
         DataStoreFactory dataStoreFactory = this.dataStoreProvider.get();
         
-        DataStore dataStore = StoredCredential.getDefaultDataStore(dataStoreFactory);
+        DataStore<StoredCredential> dataStore = StoredCredential.getDefaultDataStore(dataStoreFactory);
 
-//        StoredCredential cred = (StoredCredential)dataStore.get(userId);
+//        StoredCredential cred = dataStore.get(userId);
 //        final boolean expired = (System.currentTimeMillis() - cred.getExpirationTimeMilliseconds()) >= 0;
 //        System.out.println("Access token expired: " + expired + ", expiry on: " + new Date(cred.getExpirationTimeMilliseconds()));
 
@@ -111,7 +111,7 @@ public class CredentialsProvider{
         // Build flow and trigger user authorization request.
         GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
                 httpTransport, jsonFactory, clientSecrets, oauth2.getAccessTokenScopes())
-                .setDataStoreFactory(dataStoreFactory)
+				.setCredentialDataStore(dataStore)
                 .setAccessType(oauth2.getAccessType())
 				.setApprovalPrompt(oauth2.getApprovalPrompt())
                 // This listener will help us save the new access token gotten using
