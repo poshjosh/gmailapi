@@ -18,13 +18,17 @@ public class StoredCredentailState implements Serializable {
     public static StoredCredentailState loadFrom(String tokensDir) {
         StoredCredentailState storedCredentailState = new StoredCredentailState();
         try {
-            final String userId = "user"; // refers to current user
             DataStoreFactory dataStoreFactory = new DataStoreProviderImpl(tokensDir).get();
             DataStore<StoredCredential> dataStore = StoredCredential.getDefaultDataStore(dataStoreFactory);
-            StoredCredential cred = dataStore.get(userId);
-            storedCredentailState.setAccessTokenPresent(cred.getAccessToken() != null);
-            storedCredentailState.setRefreshTokenPresent(cred.getRefreshToken() != null);
-            storedCredentailState.setExpirationTimeMilliseconds(cred.getExpirationTimeMilliseconds());
+            if(dataStore != null) {
+                final String userId = "user"; // refers to current user
+                StoredCredential cred = dataStore.get(userId);
+                if(cred != null) {
+                    storedCredentailState.setAccessTokenPresent(cred.getAccessToken() != null);
+                    storedCredentailState.setRefreshTokenPresent(cred.getRefreshToken() != null);
+                    storedCredentailState.setExpirationTimeMilliseconds(cred.getExpirationTimeMilliseconds());
+                }
+            }
         }catch(IOException e) {
             e.printStackTrace();
         }
