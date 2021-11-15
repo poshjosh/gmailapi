@@ -50,12 +50,43 @@ public final class MessageUtil {
     /**
      * Create a MimeMessage using the parameters provided.
      *
+     * @param to email addresses of the receivers
+     * @param from email address of the sender, the mailbox account
+     * @param subject subject of the email
+     * @param bodyText body text of the email
+     * @param charset
+     * @param subtype
+     * @return the MimeMessage to be used to send email
+     * @throws MessagingException
+     * @see #createEmail(String, String, String, String)
+     */
+    public static MimeMessage createEmail(String [] to,
+                                          String from,
+                                          String subject,
+                                          String bodyText,
+                                          String charset,
+                                          String subtype) throws MessagingException {
+
+        MimeMessage email = MessageUtil.createEmail(to[0], from, subject, bodyText);
+        for(int i=1; i<to.length; i++) {
+            email.addRecipient(javax.mail.Message.RecipientType.TO,
+                    new InternetAddress(to[i]));
+        }
+        email.setText(bodyText, charset, subtype);
+
+        return email;
+    }
+
+    /**
+     * Create a MimeMessage using the parameters provided.
+     *
      * @param to email address of the receiver
      * @param from email address of the sender, the mailbox account
      * @param subject subject of the email
      * @param bodyText body text of the email
      * @return the MimeMessage to be used to send email
      * @throws MessagingException
+     * @see #createEmail(String, String, String, String, String, String)
      */
     public static MimeMessage createEmail(String to,
                                           String from,
@@ -72,6 +103,7 @@ public final class MessageUtil {
                 new InternetAddress(to));
         email.setSubject(subject);
         email.setText(bodyText);
+
         return email;
     }
 
